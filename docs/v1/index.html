@@ -96,7 +96,7 @@
         }
       };
 
-      const handleClick = () => {
+      const handlePointerDown = () => {
         if (state.stopped) {
           return;
         }
@@ -110,11 +110,11 @@
         updateDom();
       };
 
-      window.addEventListener("click", handleClick);
+      window.addEventListener("pointerdown", handlePointerDown);
 
       document.addEventListener("keydown", (event) => {
         if (event.code === "Space") {
-          handleClick();
+          handlePointerDown();
         }
       });
 
@@ -186,7 +186,7 @@
 
       .roulette {
         display: grid;
-        font-size: 20dvh;
+        font-size: 20dvmin;
         font-weight: bold;
         line-height: 1.25;
         perspective: 50em;
