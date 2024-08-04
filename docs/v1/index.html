@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Judo Roulette</title>
+  </head>
+  <body>
+    <div class="roulette" id="roulette">
+      <div class="men">
+        <div class="m90kg">-90 kg</div>
+      </div>
+      <div class="women">
+        <div class="p70kg">+70 kg</div>
+      </div>
+      <div class="men">
+        <div class="p90kg">+90 kg</div>
+      </div>
+      <div class="women">
+        <div class="m70kg">-70 kg</div>
+      </div>
+      <div class="men">
+        <div class="m73kg">-73 kg</div>
+      </div>
+      <div class="women">
+        <div class="m57kg">-57 kg</div>
+      </div>
+      <div class="men">
+        <div class="m90kg">-90 kg</div>
+      </div>
+      <div class="women">
+        <div class="p70kg">+70 kg</div>
+      </div>
+      <div class="men">
+        <div class="p90kg">+90 kg</div>
+      </div>
+      <div class="women">
+        <div class="m70kg">-70 kg</div>
+      </div>
+      <div class="men">
+        <div class="m73kg">-73 kg</div>
+      </div>
+      <div class="women">
+        <div class="m57kg">-57 kg</div>
+      </div>
+    </div>
+
+    <script type="module">
+      const roulette = document.querySelector("#roulette");
+
+      const ONE_TURN_DEGREE = 360;
+      const HALF_TURN_DEGREE = ONE_TURN_DEGREE / 2;
+      const PLUS_90_KG_DEGREE = (ONE_TURN_DEGREE / 12) * 3;
+
+      const state = {
+        started: false,
+        stopped: false,
+        settled: false,
+      };
+
+      const updateDom = () => {
+        roulette.classList.toggle("started", state.started);
+        roulette.classList.toggle("stopped", state.stopped);
+        roulette.classList.toggle("settled", state.settled);
+
+        if (state.stopped) {
+          // 確実に+90 kgで停止させる
+          setTimeout(() => {
+            const turnSpinning = window
+              .getComputedStyle(roulette)
+              .getPropertyValue("--turn-spinning");
+
+            const turnSpinningDegree = Number(turnSpinning.replace("deg", ""));
+
+            let turnStoppingDegree =
+              ONE_TURN_DEGREE +
+              (ONE_TURN_DEGREE - turnSpinningDegree) +
+              PLUS_90_KG_DEGREE;
+
+            if (turnStoppingDegree < ONE_TURN_DEGREE * 2) {
+              turnStoppingDegree += HALF_TURN_DEGREE;
+            }
+
+            roulette.style.setProperty(
+              "--turn-stopping",
+              `${turnStoppingDegree}deg`
+            );
+          }, 50);
+        }
+
+        if (state.settled) {
+          // +90 kgを確定値にする
+          document.querySelectorAll(".p90kg").forEach((element) => {
+            element.classList.add("settledValue");
+          });
+        }
+      };
+
+      const handleClick = () => {
+        if (state.stopped) {
+          return;
+        }
+
+        if (state.started) {
+          state.stopped = true;
+        } else {
+          state.started = true;
+        }
+
+        updateDom();
+      };
+
+      window.addEventListener("click", handleClick);
+
+      document.addEventListener("keydown", (event) => {
+        if (event.code === "Space") {
+          handleClick();
+        }
+      });
+
+      roulette.addEventListener("transitionend", () => {
+        if (state.stopped) {
+          state.settled = true;
+          updateDom();
+        }
+      });
+    </script>
+
+    <style>
+      @property --turn-starting {
+        syntax: "<angle>";
+        initial-value: 0turn;
+        inherits: true;
+      }
+
+      @property --turn-spinning {
+        syntax: "<angle>";
+        initial-value: 0turn;
+        inherits: true;
+      }
+
+      @property --turn-stopping {
+        syntax: "<angle>";
+        initial-value: 0turn;
+        inherits: true;
+      }
+
+      @keyframes spin {
+        from {
+          --turn-spinning: 0turn;
+        }
+        to {
+          --turn-spinning: 1turn;
+        }
+      }
+
+      :root {
+        /* --ease-in-quart: cubic-bezier(0.9, 0.03, 0.69, 0.22); */
+        --ease-out-quart: cubic-bezier(0.17, 0.84, 0.44, 1);
+        --ease-in-back: cubic-bezier(0.36, 0, 0.66, -0.56);
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(
+          to bottom,
+          rgb(7 29 53),
+          rgb(30 57 94),
+          rgb(45 77 130),
+          rgb(45 77 130),
+          rgb(30 57 94),
+          rgb(7 29 53)
+        );
+        height: 100dvh;
+        display: gird;
+        place-content: center;
+      }
+
+      .men {
+        color: rgb(104 186 249);
+      }
+
+      .women {
+        color: rgb(193 165 218);
+      }
+
+      .roulette {
+        display: grid;
+        font-size: 20dvh;
+        font-weight: bold;
+        line-height: 1.25;
+        perspective: 50em;
+      }
+
+      .roulette.started {
+        --turn-starting: 1turn;
+        --turn-starting-duration: 1.5s;
+
+        transition-duration: var(--turn-starting-duration);
+        transition-property: --turn-starting;
+        transition-timing-function: var(--ease-in-back);
+
+        animation-delay: var(--turn-starting-duration);
+        animation-duration: 0.5s;
+        animation-iteration-count: infinite;
+        animation-name: spin;
+        animation-timing-function: linear;
+      }
+
+      .roulette.stopped {
+        animation-play-state: paused;
+
+        --turn-stopping: 2turn;
+        transition-duration: 6s;
+        transition-property: --turn-stopping;
+        transition-timing-function: var(--ease-out-quart);
+      }
+
+      .roulette > * {
+        backface-visibility: hidden;
+        grid-area: 1/1;
+        text-align: center;
+        transform-origin: center center -2.3em;
+        transform: rotateX(
+          calc(
+            (
+                (1turn / 12) * var(--n) + var(--turn-starting) +
+                  var(--turn-spinning) + var(--turn-stopping)
+              ) * -1
+          )
+        );
+      }
+
+      .roulette.settled > * > .settledValue {
+        transition-duration: 1s;
+        transition-property: transform;
+        transform: scale(1.5);
+      }
+
+      .roulette.settled > * > :not(.settledValue) {
+        transition-duration: 1s;
+        transition-property: opacity;
+        opacity: 0;
+      }
+
+      .roulette > :nth-child(1) {
+        --n: 1;
+      }
+
+      .roulette > :nth-child(2) {
+        --n: 2;
+      }
+
+      .roulette > :nth-child(3) {
+        --n: 3;
+      }
+
+      .roulette > :nth-child(4) {
+        --n: 4;
+      }
+
+      .roulette > :nth-child(5) {
+        --n: 5;
+      }
+
+      .roulette > :nth-child(6) {
+        --n: 6;
+      }
+
+      .roulette > :nth-child(7) {
+        --n: 7;
+      }
+
+      .roulette > :nth-child(8) {
+        --n: 8;
+      }
+
+      .roulette > :nth-child(9) {
+        --n: 9;
+      }
+
+      .roulette > :nth-child(10) {
+        --n: 10;
+      }
+
+      .roulette > :nth-child(11) {
+        --n: 11;
+      }
+
+      .roulette > :nth-child(12) {
+        --n: 12;
+      }
+    </style>
+  </body>
+</html>
