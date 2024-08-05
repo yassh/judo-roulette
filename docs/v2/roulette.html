@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Judo Roulette</title>
+  </head>
+  <body>
+    <div class="roulette" id="roulette">
+      <div class="option1"><div class="text"></div></div>
+      <div class="option2"><div class="text"></div></div>
+      <div class="option3"><div class="text"></div></div>
+      <div class="option4"><div class="text"></div></div>
+      <div class="option5"><div class="text"></div></div>
+      <div class="option6"><div class="text"></div></div>
+      <div class="option1"><div class="text"></div></div>
+      <div class="option2"><div class="text"></div></div>
+      <div class="option3"><div class="text"></div></div>
+      <div class="option4"><div class="text"></div></div>
+      <div class="option5"><div class="text"></div></div>
+      <div class="option6"><div class="text"></div></div>
+    </div>
+
+    <script type="module">
+      const roulette = document.querySelector("#roulette");
+
+      const ONE_TURN_DEGREE = 360;
+      const HALF_TURN_DEGREE = ONE_TURN_DEGREE / 2;
+
+      const state = {
+        started: false,
+        stopped: false,
+        settled: false,
+      };
+
+      const updateDom = () => {
+        roulette.classList.toggle("started", state.started);
+        roulette.classList.toggle("stopped", state.stopped);
+        roulette.classList.toggle("settled", state.settled);
+
+        if (state.stopped) {
+          setTimeout(() => {
+            const turnSpinning = window
+              .getComputedStyle(roulette)
+              .getPropertyValue("--turn-spinning");
+
+            const turnSpinningDegree = Number(turnSpinning.replace("deg", ""));
+
+            const selectedOption = roulette.querySelector(".selected");
+            const selectedOptionIndex = [...roulette.children].indexOf(
+              selectedOption
+            );
+            const selectedOptionDegree =
+              (ONE_TURN_DEGREE / roulette.children.length) *
+              selectedOptionIndex;
+
+            let turnStoppingDegree =
+              ONE_TURN_DEGREE +
+              (ONE_TURN_DEGREE - turnSpinningDegree) +
+              selectedOptionDegree;
+
+            if (turnStoppingDegree < ONE_TURN_DEGREE * 2) {
+              turnStoppingDegree += HALF_TURN_DEGREE;
+            }
+
+            roulette.style.setProperty(
+              "--turn-stopping",
+              `${turnStoppingDegree}deg`
+            );
+          }, 50);
+        }
+      };
+
+      const handlePointerDown = () => {
+        if (state.stopped) {
+          return;
+        }
+
+        if (state.started) {
+          state.stopped = true;
+        } else {
+          state.started = true;
+        }
+
+        updateDom();
+      };
+
+      window.addEventListener("pointerdown", handlePointerDown);
+
+      document.addEventListener("keydown", (event) => {
+        if (event.code === "Space") {
+          handlePointerDown();
+        }
+      });
+
+      roulette.addEventListener("transitionend", () => {
+        if (state.stopped) {
+          state.settled = true;
+          updateDom();
+        }
+      });
+
+      const setup = () => {
+        const searchParams = new URLSearchParams(window.location.search);
+
+        [
+          "option1",
+          "option2",
+          "option3",
+          "option4",
+          "option5",
+          "option6",
+        ].forEach((item) => {
+          roulette.querySelectorAll(`.${item}`).forEach((element) => {
+            const text = searchParams.get(item);
+            if (text) {
+              element.querySelector(".text").textContent = text;
+            } else {
+              element.remove();
+            }
+
+            const color = searchParams.get(item + "color");
+            if (color) {
+              element.classList.add(color);
+            }
+          });
+        });
+
+        roulette.style.setProperty("--options-count", roulette.children.length);
+
+        roulette
+          .querySelectorAll(`.${searchParams.get("selected") || "option1"}`)
+          .forEach((element) => {
+            element.classList.add("selected");
+          });
+      };
+
+      setup();
+    </script>
+
+    <style>
+      @property --turn-starting {
+        syntax: "<angle>";
+        initial-value: 0turn;
+        inherits: true;
+      }
+
+      @property --turn-spinning {
+        syntax: "<angle>";
+        initial-value: 0turn;
+        inherits: true;
+      }
+
+      @property --turn-stopping {
+        syntax: "<angle>";
+        initial-value: 0turn;
+        inherits: true;
+      }
+
+      @keyframes spin {
+        from {
+          --turn-spinning: 0turn;
+        }
+        to {
+          --turn-spinning: 1turn;
+        }
+      }
+
+      *,
+      ::before,
+      ::after {
+        box-sizing: border-box;
+      }
+
+      :root {
+        /* --ease-in-quart: cubic-bezier(0.9, 0.03, 0.69, 0.22); */
+        --ease-out-quart: cubic-bezier(0.17, 0.84, 0.44, 1);
+        --ease-in-back: cubic-bezier(0.36, 0, 0.66, -0.56);
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(
+          to bottom,
+          rgb(7 29 53),
+          rgb(30 57 94),
+          rgb(45 77 130),
+          rgb(45 77 130),
+          rgb(30 57 94),
+          rgb(7 29 53)
+        );
+        height: 100dvh;
+        display: grid;
+        place-content: center;
+      }
+
+      .blue {
+        color: rgb(104 186 249);
+      }
+
+      .pink {
+        color: rgb(193 165 218);
+      }
+
+      .roulette {
+        display: grid;
+        font-size: 20dvmin;
+        font-weight: bold;
+        line-height: 1.25;
+        perspective: 50em;
+        text-align: center;
+      }
+
+      .roulette.started {
+        --turn-starting: 1turn;
+        --turn-starting-duration: 1.5s;
+
+        transition-duration: var(--turn-starting-duration);
+        transition-property: --turn-starting;
+        transition-timing-function: var(--ease-in-back);
+
+        animation-delay: var(--turn-starting-duration);
+        animation-duration: 0.5s;
+        animation-iteration-count: infinite;
+        animation-name: spin;
+        animation-timing-function: linear;
+      }
+
+      .roulette.stopped {
+        animation-play-state: paused;
+
+        --turn-stopping: 2turn;
+        transition-duration: 6s;
+        transition-property: --turn-stopping;
+        transition-timing-function: var(--ease-out-quart);
+      }
+
+      .roulette > * {
+        backface-visibility: hidden;
+        grid-area: 1/1;
+        transform-origin: center center -2.3em;
+        transform: rotateX(
+          calc(
+            (1turn / var(--options-count)) * var(--index) -
+              (
+                var(--turn-starting) + var(--turn-spinning) +
+                  var(--turn-stopping)
+              )
+          )
+        );
+      }
+
+      .roulette.settled > .selected > .text {
+        transition-duration: 1s;
+        transition-property: transform;
+        transform: scale(1.5);
+      }
+
+      .roulette.settled > :not(.selected) > .text {
+        transition-duration: 1s;
+        transition-property: opacity;
+        opacity: 0;
+      }
+
+      .roulette > :nth-child(1) {
+        --index: 0;
+      }
+
+      .roulette > :nth-child(2) {
+        --index: 1;
+      }
+
+      .roulette > :nth-child(3) {
+        --index: 2;
+      }
+
+      .roulette > :nth-child(4) {
+        --index: 3;
+      }
+
+      .roulette > :nth-child(5) {
+        --index: 4;
+      }
+
+      .roulette > :nth-child(6) {
+        --index: 5;
+      }
+
+      .roulette > :nth-child(7) {
+        --index: 6;
+      }
+
+      .roulette > :nth-child(8) {
+        --index: 7;
+      }
+
+      .roulette > :nth-child(9) {
+        --index: 8;
+      }
+
+      .roulette > :nth-child(10) {
+        --index: 9;
+      }
+
+      .roulette > :nth-child(11) {
+        --index: 10;
+      }
+
+      .roulette > :nth-child(12) {
+        --index: 11;
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Judo Roulette</title>
+  </head>
+  <body>
+    <form method="get" action="./roulette.html">
+      <h1>Judo Roulette</h1>
+
+      <div class="inputs">
+        <input type="text" name="option1" value="-57 kg" />
+        <select name="option1color">
+          <option value="blue">blue</option>
+          <option value="pink" selected>pink</option>
+        </select>
+        <input type="radio" name="selected" value="option1" />
+
+        <input type="text" name="option2" value="-73 kg" />
+        <select name="option2color">
+          <option value="blue" selected>blue</option>
+          <option value="pink">pink</option>
+        </select>
+        <input type="radio" name="selected" value="option2" />
+
+        <input type="text" name="option3" value="-70 kg" />
+        <select name="option3color">
+          <option value="blue">blue</option>
+          <option value="pink" selected>pink</option>
+        </select>
+        <input type="radio" name="selected" value="option3" />
+
+        <input type="text" name="option4" value="+90 kg" />
+        <select name="option4color">
+          <option value="blue" selected>blue</option>
+          <option value="pink">pink</option>
+        </select>
+        <input type="radio" name="selected" value="option4" checked />
+
+        <input type="text" name="option5" value="+70 kg" />
+        <select name="option5color">
+          <option value="blue">blue</option>
+          <option value="pink" selected>pink</option>
+        </select>
+        <input type="radio" name="selected" value="option5" />
+
+        <input type="text" name="option6" value="-90 kg" />
+        <select name="option6color">
+          <option value="blue" selected>blue</option>
+          <option value="pink">pink</option>
+        </select>
+        <input type="radio" name="selected" value="option6" />
+      </div>
+
+      <div class="buttons">
+        <button type="submit">Ready</button>
+        <button type="button" id="clearButton">Clear</button>
+      </div>
+    </form>
+
+    <script type="module">
+      const form = document.querySelector("form");
+      const clearButton = document.querySelector("#clearButton");
+
+      clearButton.addEventListener("click", () => {
+        if (window.confirm("Do you really want to clear?")) {
+          form.querySelectorAll('input[type="text"]').forEach((input) => {
+            input.value = "";
+          });
+          form.querySelectorAll("select").forEach((input) => {
+            input.value = "blue";
+          });
+          form.querySelectorAll('input[type="radio"]')[0].checked = true;
+        }
+      });
+    </script>
+
+    <style>
+      *,
+      ::before,
+      ::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 24px;
+      }
+
+      input,
+      select,
+      button {
+        font: inherit;
+      }
+
+      form {
+        padding: 1rem;
+        max-width: 25rem;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 2rem;
+        text-align: center;
+      }
+
+      .inputs {
+        margin-top: 1em;
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .buttons {
+        margin-top: 1em;
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+  </body>
+</html>
