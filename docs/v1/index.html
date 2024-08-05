@@ -11,37 +11,38 @@
         <div class="text">-57 kg</div>
       </div>
       <div class="men">
-        <div class="text">-90 kg</div>
+        <div class="text">-73 kg</div>
       </div>
       <div class="women">
-        <div class="text">+70 kg</div>
+        <div class="text">-70 kg</div>
       </div>
       <div class="men selected">
         <div class="text">+90 kg</div>
       </div>
       <div class="women">
-        <div class="text">-70 kg</div>
+        <div class="text">+70 kg</div>
       </div>
       <div class="men">
-        <div class="text">-73 kg</div>
+        <div class="text">-90 kg</div>
       </div>
+
       <div class="women">
         <div class="text">-57 kg</div>
       </div>
       <div class="men">
-        <div class="text">-90 kg</div>
+        <div class="text">-73 kg</div>
       </div>
       <div class="women">
-        <div class="text">+70 kg</div>
+        <div class="text">-70 kg</div>
       </div>
       <div class="men selected">
         <div class="text">+90 kg</div>
       </div>
       <div class="women">
-        <div class="text">-70 kg</div>
+        <div class="text">+70 kg</div>
       </div>
       <div class="men">
-        <div class="text">-73 kg</div>
+        <div class="text">-90 kg</div>
       </div>
     </div>
 
@@ -223,10 +224,11 @@
         transform-origin: center center -2.3em;
         transform: rotateX(
           calc(
-            (
-                (1turn / 12) * var(--index) + var(--turn-starting) +
-                  var(--turn-spinning) + var(--turn-stopping)
-              ) * -1
+            (1turn / 12) * var(--index) -
+              (
+                var(--turn-starting) + var(--turn-spinning) +
+                  var(--turn-stopping)
+              )
           )
         );
       }
