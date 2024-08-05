@@ -51,7 +51,6 @@
 
       const ONE_TURN_DEGREE = 360;
       const HALF_TURN_DEGREE = ONE_TURN_DEGREE / 2;
-      const PLUS_90_KG_DEGREE = (ONE_TURN_DEGREE / 12) * 3;
 
       const state = {
         started: false,
@@ -65,7 +64,6 @@
         roulette.classList.toggle("settled", state.settled);
 
         if (state.stopped) {
-          // 確実に+90 kgで停止させる
           setTimeout(() => {
             const turnSpinning = window
               .getComputedStyle(roulette)
@@ -73,10 +71,18 @@
 
             const turnSpinningDegree = Number(turnSpinning.replace("deg", ""));
 
+            const selectedOption = roulette.querySelector(".selected");
+            const selectedOptionIndex = [...roulette.children].indexOf(
+              selectedOption
+            );
+            const selectedOptionDegree =
+              (ONE_TURN_DEGREE / roulette.children.length) *
+              selectedOptionIndex;
+
             let turnStoppingDegree =
               ONE_TURN_DEGREE +
               (ONE_TURN_DEGREE - turnSpinningDegree) +
-              PLUS_90_KG_DEGREE;
+              selectedOptionDegree;
 
             if (turnStoppingDegree < ONE_TURN_DEGREE * 2) {
               turnStoppingDegree += HALF_TURN_DEGREE;
