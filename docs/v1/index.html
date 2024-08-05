@@ -7,41 +7,41 @@
   </head>
   <body>
     <div class="roulette" id="roulette">
-      <div class="men">
-        <div class="m90kg">-90 kg</div>
-      </div>
       <div class="women">
-        <div class="p70kg">+70 kg</div>
+        <div class="text">-57 kg</div>
       </div>
       <div class="men">
-        <div class="p90kg">+90 kg</div>
+        <div class="text">-90 kg</div>
       </div>
       <div class="women">
-        <div class="m70kg">-70 kg</div>
+        <div class="text">+70 kg</div>
+      </div>
+      <div class="men selected">
+        <div class="text">+90 kg</div>
+      </div>
+      <div class="women">
+        <div class="text">-70 kg</div>
       </div>
       <div class="men">
-        <div class="m73kg">-73 kg</div>
+        <div class="text">-73 kg</div>
       </div>
       <div class="women">
-        <div class="m57kg">-57 kg</div>
+        <div class="text">-57 kg</div>
       </div>
       <div class="men">
-        <div class="m90kg">-90 kg</div>
+        <div class="text">-90 kg</div>
       </div>
       <div class="women">
-        <div class="p70kg">+70 kg</div>
+        <div class="text">+70 kg</div>
+      </div>
+      <div class="men selected">
+        <div class="text">+90 kg</div>
+      </div>
+      <div class="women">
+        <div class="text">-70 kg</div>
       </div>
       <div class="men">
-        <div class="p90kg">+90 kg</div>
-      </div>
-      <div class="women">
-        <div class="m70kg">-70 kg</div>
-      </div>
-      <div class="men">
-        <div class="m73kg">-73 kg</div>
-      </div>
-      <div class="women">
-        <div class="m57kg">-57 kg</div>
+        <div class="text">-73 kg</div>
       </div>
     </div>
 
@@ -86,13 +86,6 @@
               `${turnStoppingDegree}deg`
             );
           }, 50);
-        }
-
-        if (state.settled) {
-          // +90 kgを確定値にする
-          document.querySelectorAll(".p90kg").forEach((element) => {
-            element.classList.add("settledValue");
-          });
         }
       };
 
@@ -231,71 +224,71 @@
         transform: rotateX(
           calc(
             (
-                (1turn / 12) * var(--n) + var(--turn-starting) +
+                (1turn / 12) * var(--index) + var(--turn-starting) +
                   var(--turn-spinning) + var(--turn-stopping)
               ) * -1
           )
         );
       }
 
-      .roulette.settled > * > .settledValue {
+      .roulette.settled > .selected > .text {
         transition-duration: 1s;
         transition-property: transform;
         transform: scale(1.5);
       }
 
-      .roulette.settled > * > :not(.settledValue) {
+      .roulette.settled > :not(.selected) > .text {
         transition-duration: 1s;
         transition-property: opacity;
         opacity: 0;
       }
 
       .roulette > :nth-child(1) {
-        --n: 1;
+        --index: 0;
       }
 
       .roulette > :nth-child(2) {
-        --n: 2;
+        --index: 1;
       }
 
       .roulette > :nth-child(3) {
-        --n: 3;
+        --index: 2;
       }
 
       .roulette > :nth-child(4) {
-        --n: 4;
+        --index: 3;
       }
 
       .roulette > :nth-child(5) {
-        --n: 5;
+        --index: 4;
       }
 
       .roulette > :nth-child(6) {
-        --n: 6;
+        --index: 5;
       }
 
       .roulette > :nth-child(7) {
-        --n: 7;
+        --index: 6;
       }
 
       .roulette > :nth-child(8) {
-        --n: 8;
+        --index: 7;
       }
 
       .roulette > :nth-child(9) {
-        --n: 9;
+        --index: 8;
       }
 
       .roulette > :nth-child(10) {
-        --n: 10;
+        --index: 9;
       }
 
       .roulette > :nth-child(11) {
-        --n: 11;
+        --index: 10;
       }
 
       .roulette > :nth-child(12) {
-        --n: 12;
+        --index: 11;
       }
     </style>
   </body>
