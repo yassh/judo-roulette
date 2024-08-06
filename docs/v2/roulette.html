@@ -157,6 +157,15 @@
         inherits: true;
       }
 
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
       @keyframes spin {
         from {
           --turn-spinning: 0turn;
@@ -210,6 +219,10 @@
         line-height: 1.25;
         perspective: 50em;
         text-align: center;
+
+        animation-duration: 2s;
+        animation-fill-mode: both;
+        animation-name: fade-in;
       }
 
       .roulette.started {
