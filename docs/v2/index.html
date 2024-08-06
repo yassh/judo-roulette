@@ -6,58 +6,60 @@
     <title>Judo Roulette</title>
   </head>
   <body>
-    <form method="get" action="./roulette.html">
+    <main>
       <h1>Judo Roulette</h1>
 
-      <div class="inputs">
-        <input type="text" name="option1" value="-57 kg" />
-        <select name="option1color">
-          <option value="blue">blue</option>
-          <option value="pink" selected>pink</option>
-        </select>
-        <input type="radio" name="selected" value="option1" />
+      <form method="get" action="./roulette.html">
+        <div class="inputs">
+          <input type="text" name="option1" value="-57 kg" />
+          <select name="option1color">
+            <option value="blue">blue</option>
+            <option value="pink" selected>pink</option>
+          </select>
+          <input type="radio" name="selected" value="option1" />
 
-        <input type="text" name="option2" value="-73 kg" />
-        <select name="option2color">
-          <option value="blue" selected>blue</option>
-          <option value="pink">pink</option>
-        </select>
-        <input type="radio" name="selected" value="option2" />
+          <input type="text" name="option2" value="-73 kg" />
+          <select name="option2color">
+            <option value="blue" selected>blue</option>
+            <option value="pink">pink</option>
+          </select>
+          <input type="radio" name="selected" value="option2" />
 
-        <input type="text" name="option3" value="-70 kg" />
-        <select name="option3color">
-          <option value="blue">blue</option>
-          <option value="pink" selected>pink</option>
-        </select>
-        <input type="radio" name="selected" value="option3" />
+          <input type="text" name="option3" value="-70 kg" />
+          <select name="option3color">
+            <option value="blue">blue</option>
+            <option value="pink" selected>pink</option>
+          </select>
+          <input type="radio" name="selected" value="option3" />
 
-        <input type="text" name="option4" value="+90 kg" />
-        <select name="option4color">
-          <option value="blue" selected>blue</option>
-          <option value="pink">pink</option>
-        </select>
-        <input type="radio" name="selected" value="option4" checked />
+          <input type="text" name="option4" value="+90 kg" />
+          <select name="option4color">
+            <option value="blue" selected>blue</option>
+            <option value="pink">pink</option>
+          </select>
+          <input type="radio" name="selected" value="option4" checked />
 
-        <input type="text" name="option5" value="+70 kg" />
-        <select name="option5color">
-          <option value="blue">blue</option>
-          <option value="pink" selected>pink</option>
-        </select>
-        <input type="radio" name="selected" value="option5" />
+          <input type="text" name="option5" value="+70 kg" />
+          <select name="option5color">
+            <option value="blue">blue</option>
+            <option value="pink" selected>pink</option>
+          </select>
+          <input type="radio" name="selected" value="option5" />
 
-        <input type="text" name="option6" value="-90 kg" />
-        <select name="option6color">
-          <option value="blue" selected>blue</option>
-          <option value="pink">pink</option>
-        </select>
-        <input type="radio" name="selected" value="option6" />
-      </div>
+          <input type="text" name="option6" value="-90 kg" />
+          <select name="option6color">
+            <option value="blue" selected>blue</option>
+            <option value="pink">pink</option>
+          </select>
+          <input type="radio" name="selected" value="option6" />
+        </div>
 
-      <div class="buttons">
-        <button type="submit">Ready</button>
-        <button type="button" id="clearButton">Clear</button>
-      </div>
-    </form>
+        <div class="buttons">
+          <button type="submit">Ready</button>
+          <button type="button" id="clearButton">Clear</button>
+        </div>
+      </form>
+    </main>
 
     <script type="module">
       const form = document.querySelector("form");
@@ -89,13 +91,7 @@
         font-size: 24px;
       }
 
-      input,
-      select,
-      button {
-        font: inherit;
-      }
-
-      form {
+      main {
         padding: 1rem;
         max-width: 25rem;
         margin-left: auto;
@@ -108,8 +104,17 @@
         text-align: center;
       }
 
-      .inputs {
+      input,
+      select,
+      button {
+        font: inherit;
+      }
+
+      form {
         margin-top: 1em;
+      }
+
+      .inputs {
         display: grid;
         grid-template-columns: 1fr auto auto;
         align-items: center;
